@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+title Отправка подтверждения email после регистрации
+control "Внешний\nсервис" as ext_service
+
+participant API as API
+participant Queue as Queue
+collections Handlers as handler
+participant "Ext \nService" as ext_api
+database "DB \nAdapter" as db
+
+ext_service -> API: Отправка \nсообщения
+API -> Queue: Событие\nрассылка
+
+alt#Gold Обработка рассылки
+
+end
+
+
+@enduml
