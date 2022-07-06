@@ -1,0 +1,32 @@
+@startuml
+!include tmpl/C4_Component.puml
+
+
+
+
+Container_Boundary(rec_bd, "API", "asdfasd") {
+    Container(api, "API Application")
+    ContainerDb(db, "Database", "MongoDB?", "хранение подготовленных рекомендаций")
+
+    ContainerQueue(que, "Queue", "RabbitMQ?","очередь задач на обновление рекомендаций")
+    Container(workers, "workers")
+}
+
+Container_Boundary(movies_bd, "Movies") {
+    System_Ext(movies, "Movies", "Информация о фильмах и рейтенгах")
+}
+Container_Boundary(ugc_bd, "UGC") {
+    System_Ext(ugc, "UGC", "пользовательский контент")
+}
+
+
+
+Rel_D(api, db, "чтение")
+Rel_D(api, que, "Создать рекомендацию")
+Rel_D(que, workers, "Создать рекомендацию")
+Rel_U(workers, db, "Обновить рекомендацию")
+
+Rel_D(workers, movies, "Получение данных о фильмах")
+Rel_D(workers, ugc, "Получение данных о предпочтениях пользователя")
+
+@enduml

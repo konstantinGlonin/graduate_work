@@ -1,0 +1,39 @@
+@startuml
+!include tmpl/C4_Container.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(user, "User")
+
+System_Boundary(movies_sys, "Movies"){
+    Container_Boundary(auth_bd, "???AUTH???") {
+        System_Ext(auth, "Auth", "нужен ли он нам тут?")
+    }
+    Container_Boundary(ugc_bd, "UGC") {
+        System_Ext(ugc, "UGC", "пользовательский контент")
+    }
+
+    Container_Boundary(rec_bd, "Recommender") {
+        Container(api, "API Application")
+        ContainerDb(db, "Database", "MongoDB?", "хранение подготовленных рекомендаций")
+
+        ContainerQueue(que, "Queue", "RabbitMQ?","очередь задач на обновление рекомендаций")
+        Container(workers, "workers")
+    }
+
+    Container_Boundary(movies_bd, "Movies") {
+        System_Ext(movies, "Movies", "Информация о фильмах и рейтенгах")
+    }
+
+}
+
+Rel_D(user, api, "получение рекомендации")
+Rel_D(api, db, "чтение")
+Rel_D(api, que, "Создать рекомендацию")
+Rel_D(que, workers, "Создать рекомендацию")
+Rel_U(workers, db, "Обновить рекомендацию")
+
+Rel_R(workers, movies, "Получение данных о фильмах")
+Rel_L(workers, ugc, "Получение данных о предпочтениях пользователя")
+
+@enduml

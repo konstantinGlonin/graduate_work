@@ -1,0 +1,20 @@
+@startuml
+!include tmpl/C4_Context.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(user, "User")
+
+System(movies, "Movies")
+System_Ext(mail_system, "E-mail")
+
+
+Rel_Down(user, movies, "пользуется")
+
+Rel_Up(mail_system, user, "Отправка email пользователю")
+
+Rel_Right(movies, mail_system, "Отправка email")
+
+
+
+@enduml
