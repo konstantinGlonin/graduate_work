@@ -1,22 +1,30 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-autonumber
-title Отправка подтверждения email после регистрации
-control "Внешний\nсервис" as ext_service
+title Запрос рекомендации \nдля пользователя
+actor User as user
+participant API as api
 
-participant API as API
-participant Queue as Queue
-collections Handlers as handler
-participant "Ext \nService" as ext_api
 database "DB \nAdapter" as db
+participant Queue as queue
+collections workers as handler
+participant "UGC" as ext_api
 
-ext_service -> API: Отправка \nсообщения
-API -> Queue: Событие\nрассылка
+user -> api++: запрос\nрекомендации
+api -> db++: запрос\nрекомендации
 
-alt#Gold Обработка рассылки
+alt рекомендация есть и\nона актуальна
+    api <- db--: рекомендация
+user <- api: рекомендация
+else рекомендации нет или\nона не актуальна
+    api -> queue++: обновить\nрекомендацию
+    user <- api--: рекомендация
 
+    queue -> handler--++: обновить\nрекомендацию
+    handler -> ext_api++: получить данные\nо пользователе
+    handler <- ext_api--: данные\nо пользователе
+    handler -> handler: вжухх и\nрекомендация
+    handler -> db--: сохранить рекомендацию
 end
-
 
 @enduml
