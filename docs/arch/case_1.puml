@@ -8,7 +8,7 @@ participant API as api
 database "DB \nAdapter" as db
 participant Queue as queue
 collections workers as handler
-participant "UGC" as ext_api
+participant "DWH" as ext_api
 
 user -> api++: запрос\nрекомендации
 api -> db++: запрос\nрекомендации
@@ -17,6 +17,9 @@ alt рекомендация есть и\nона актуальна
     api <- db--: рекомендация
 user <- api: рекомендация
 else рекомендации нет или\nона не актуальна
+    api -> ext_api++: получить популярные фильмы
+    api <- ext_api--: популярные фильмы
+
     api -> queue++: обновить\nрекомендацию
     user <- api--: рекомендация
 

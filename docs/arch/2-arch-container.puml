@@ -6,18 +6,15 @@ SHOW_PERSON_OUTLINE()
 Person(user, "User")
 
 System_Boundary(movies_sys, "Movies"){
-    Container_Boundary(auth_bd, "???AUTH???") {
-        System_Ext(auth, "Auth", "нужен ли он нам тут?")
-    }
-    Container_Boundary(ugc_bd, "UGC") {
-        System_Ext(ugc, "UGC", "пользовательский контент")
+    Container_Boundary(ugc_bd, "DWH") {
+        System_Ext(ugc, "DWH", "Хранение информации о пользовательском контенте")
     }
 
     Container_Boundary(rec_bd, "Recommender") {
         Container(api, "API Application")
-        ContainerDb(db, "Database", "MongoDB?", "хранение подготовленных рекомендаций")
+        ContainerDb(db, "Database", "MongoDB", "хранение подготовленных рекомендаций")
 
-        ContainerQueue(que, "Queue", "RabbitMQ?","очередь задач на обновление рекомендаций")
+        ContainerQueue(que, "Queue", "RabbitMQ","очередь задач на обновление рекомендаций")
         Container(workers, "workers")
     }
 
