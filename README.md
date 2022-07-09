@@ -25,6 +25,7 @@
       2. Встраивание моделей в сервис как основной вариант получения рекомендаций.
 4. Тестирование работы сервиса и написание автотестов.
 5. Сдача проекта.
+   1. Подготовка презентации https://practicum.yandex.ru/learn/middle-python/courses/2b7adc5f-9e8c-4674-8c98-493c34bd82c2/sprints/22597/topics/980c8b76-53c9-4b89-afb1-4fbb08cfcd88/lessons/b202297e-ece3-4d52-9e8b-06ba990dd936/
 
 ## Архитектура системы
 ![](docs/arch/2-arch-container.png)
