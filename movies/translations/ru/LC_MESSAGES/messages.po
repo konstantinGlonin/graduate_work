@@ -1,0 +1,127 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-03-25 22:51+0000\n"
+"PO-Revision-Date: 2022-03-25 22:52+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: api/v1/films.py:22 api/v1/films.py:34
+msgid "films not found"
+msgstr "Фильм не найден"
+
+#: api/v1/genres.py:22 api/v1/genres.py:34
+msgid "genres not found"
+msgstr "Жанр не найден"
+
+#: api/v1/persons.py:22 api/v1/persons.py:34
+msgid "person not found"
+msgstr "Персона не найдена"
+
+#: api/v1/utils.py:126
+msgid "Номер страницы"
+msgstr "Номер страницы"
+
+#: api/v1/utils.py:132
+msgid "Кол-во результатов на странице"
+msgstr "Кол-во результатов на странице"
+
+#: api/v1/utils.py:145
+msgid "Сортировка по полям"
+msgstr ""
+
+#: api/v1/utils.py:146
+msgid ""
+"Сортировка по полям список полей через запятую в формате -field для "
+"сортировки по убыванию или field для сортировки по возрастанию"
+msgstr ""
+
+#: api/v1/utils.py:159 api/v1/utils.py:160
+msgid "Поиск по наименованию фильма"
+msgstr ""
+
+#: api/v1/utils.py:165
+msgid "Фильтрация по жанру"
+msgstr ""
+
+#: api/v1/utils.py:166
+msgid "Фильтрация по жанру, в качестве параметра передается ID"
+msgstr ""
+
+#: api/v1/utils.py:171
+msgid "Фильтрация по актеру"
+msgstr ""
+
+#: api/v1/utils.py:172
+msgid "Фильтрация по актеру, в качестве параметра передается ID."
+msgstr ""
+
+#: api/v1/utils.py:177
+msgid "Фильтрация по режиссеру"
+msgstr ""
+
+#: api/v1/utils.py:178
+msgid "Фильтрация по режиссеру, в качестве параметра передается ID."
+msgstr ""
+
+#: api/v1/utils.py:183
+msgid "Фильтрация по сценаристу"
+msgstr ""
+
+#: api/v1/utils.py:184
+msgid "Фильтрация по сценаристу, в качестве параметра передается ID."
+msgstr ""
+
+#: api/v1/utils.py:189
+msgid "Фильтрация по персоне"
+msgstr ""
+
+#: api/v1/utils.py:190
+msgid ""
+"Фильтрация по персоне не зависимо от роли, в качестве параметра "
+"передается ID."
+msgstr ""
+
+#: api/v1/utils.py:225
+msgid "Фильтрация по названию жанра"
+msgstr ""
+
+#: api/v1/utils.py:226
+msgid ""
+"Фильтрация по названию жанра, в качестве параметра передается название "
+"жанра."
+msgstr ""
+
+#: api/v1/utils.py:231 api/v1/utils.py:232
+msgid "Фильтрация по описанию жарна"
+msgstr ""
+
+#: api/v1/utils.py:251
+msgid "Фильтрация по имени персоны"
+msgstr ""
+
+#: api/v1/utils.py:252
+msgid "Фильтрация по имени персоны, в качестве параметра передается имя."
+msgstr ""
+
+#: api/v1/utils.py:257
+msgid "Фильтрация по фильму"
+msgstr ""
+
+#: api/v1/utils.py:258
+msgid "Фильтрация по фильму, в качестве параметра передается ID."
+msgstr ""
+

@@ -1,0 +1,47 @@
+services:
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - praktikum
+
+  app:
+    user: "1000:1000"
+    build:
+      context: .
+    ports:
+      - "8002:8000"
+    volumes:
+      - ../movies:/app
+    env_file:
+      - .env
+    depends_on:
+      - search
+      - redis
+    networks:
+      - praktikum
+    command: python3 main.py
+
+  search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+    networks:
+      - praktikum
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+
+networks:
+  praktikum:
+    external: true
+    name: praktikum
