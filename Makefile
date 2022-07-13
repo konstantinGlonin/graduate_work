@@ -10,7 +10,15 @@ start:
 
 
 stop:
-	docker-compose -f etl/docker-compose.yml down
-	docker-compose -f movies/docker-compose.yml down
-	docker-compose -f docker-compose.yaml down
+	docker-compose -f etl/docker-compose.yml stop
+	docker-compose -f movies/docker-compose.yml stop
+	docker-compose -f docker-compose.yaml stop
 
+
+down:
+	docker-compose -f etl/docker-compose.yml down  --remove-orphans
+	docker-compose -f movies/docker-compose.yml down --remove-orphans
+	docker-compose -f docker-compose.yaml down  --remove-orphans
+
+ps:
+	docker ps

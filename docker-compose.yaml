@@ -13,6 +13,8 @@ services:
       - mongodb
     networks:
       - praktikum
+    environment:
+      WAIT_HOSTS: mongodb:27017, rabbitmq:15672
 
 
   data_service:
