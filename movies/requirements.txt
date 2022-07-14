@@ -1,0 +1,10 @@
+python-dotenv==0.19.2
+elasticsearch[async]==8.1.0
+redis==4.2.1
+pydantic==1.9.0
+fastapi==0.75.0
+uvicorn==0.17.6
+gunicorn==20.1.0
+aioredis==2.0.1
+orjson==3.6.7
+Babel==2.9.1

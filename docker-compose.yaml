@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  recommendations_api:
+    user: "1000:1000"
+    build: ./src
+    volumes:
+      - ./src:/src:rw
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      - praktikum
+    environment:
+      WAIT_HOSTS: mongodb:27017, rabbitmq:15672
+
+
+  data_service:
+    user: "1000:1000"
+    build: ./data_service
+    volumes:
+      - ./data_service:/src:rw
+    ports:
+      - "8001:8000"
+    networks:
+      - praktikum
+
+  mongodb:
+    image: mongo:5.0.7
+    ports:
+      - "27017:27017"
+    networks:
+      - praktikum
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbit-volume:/var/lib/rabbitmq/
+      - ./rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbit/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - praktikum
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  rabbit-volume:
+
+networks:
+  praktikum:
+    external: false
+    name: praktikum

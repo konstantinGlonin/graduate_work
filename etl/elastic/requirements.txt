@@ -1,0 +1,7 @@
+psycopg2-binary==2.9.3
+python-dotenv==0.19.2
+elasticsearch==8.0.0
+tenacity==8.0.1
+redis==4.1.4
+pydantic==1.9.0
+requests==2.27.1
