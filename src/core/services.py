@@ -51,14 +51,14 @@ async def get_recommendation(data: BaseRecommendations,
         data_to_mongo = {
             "id": recommendation["id"],
             "type": recommendation["type"],
-            "recommendations": recommendation["recommendations"],
+            "data": recommendation["data"],
             "updated_at": recommendation["updated_at"],
             "model_version": recommendation["model_version"],
             "counter": recommendation["counter"] + 1
         }
 
         await coll.replace_one({"_id": _id}, data_to_mongo)
-        return recommendation["recommendations"]
+        return recommendation["data"]
 
     return None
 

@@ -3,27 +3,48 @@ from uuid import UUID
 
 from aio_pika import connect
 from aio_pika.abc import AbstractIncomingMessage
+from motor.motor_asyncio import AsyncIOMotorClient
 from orjson import orjson
 
 from core.config import Config
 from core.services import get_top
+from models.recomendations import Recommendation
 
 config = Config()
+mongodb = AsyncIOMotorClient(config.mongo.host, config.mongo.port)
 
 
 async def get_movie_recommendations(movie_id: UUID):
     # todo: replace by model prediction
-    return await get_top()
+    data = await get_top()
+    return Recommendation(
+        id=movie_id,
+        type='movie',
+        data=data
+    )
 
 
 async def get_user_recommendations(user_id: UUID):
     # todo: replace by model prediction
-    return await get_top()
+    data = await get_top()
+    return Recommendation(
+        id=user_id,
+        type='user',
+        data=data
+    )
 
 
-async def save_recommendations(event: dict, recommendations: dict):
-    # todo: replace by model prediction
-    print(f"     Recomedation for {event['type']} {event['id']} is: {recommendations!r}")
+async def save_recommendations(recommendation: Recommendation):
+    # todo: save to mongodb
+    coll = mongodb.movies.recommendations
+
+    prev_recommendation = await coll.find_one({"id": f"{recommendation.id}"})
+    if prev_recommendation:
+        print(f"     Update recomedation for {recommendation.type} {recommendation.id} is: {recommendation.data!r}")
+        await coll.replace_one({"_id": prev_recommendation['_id']}, recommendation.safe_dict())
+    else:
+        print(f"     Create recomedation for {recommendation.type} {recommendation.id} is: {recommendation.data!r}")
+        await coll.insert_one(recommendation.safe_dict())
 
 
 async def on_message(message: AbstractIncomingMessage) -> None:
@@ -31,12 +52,12 @@ async def on_message(message: AbstractIncomingMessage) -> None:
         event = orjson.loads(message.body.decode())
 
         if event['type'] == 'movie':
-            recommendations = await get_movie_recommendations(event['id'])
+            recommendation = await get_movie_recommendations(event['id'])
         elif event['type'] == 'user':
-            recommendations = await get_user_recommendations(event['id'])
+            recommendation = await get_user_recommendations(event['id'])
         else:
             return None
-        await save_recommendations(event, recommendations)
+        await save_recommendations(recommendation)
 
 
 async def main() -> None:
@@ -46,7 +67,7 @@ async def main() -> None:
         password=config.rabbit.password,
         login=config.rabbit.username
     )
-    # todo: Добавить инициализацию ML моделей и подключение к MongoDB
+    # todo: Добавить инициализацию ML моделей
 
     async with connection:
         channel = await connection.channel()

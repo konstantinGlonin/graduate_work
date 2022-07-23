@@ -26,3 +26,6 @@ class Config(BaseSettings):
     model_version: str = "0.0.1"
     mongo: MongoSettings = MongoSettings()
     rabbit: RabbitSettings = RabbitSettings()
+
+    def get_model_version(self):
+        return self.model_version
