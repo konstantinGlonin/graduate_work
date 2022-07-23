@@ -39,7 +39,7 @@
   "policies": [],
   "queues": [
     {
-      "name": "test",
+      "name": "recommendations",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,

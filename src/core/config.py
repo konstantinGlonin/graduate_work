@@ -20,5 +20,9 @@ class RabbitSettings(BaseSettings):
 
 
 class Config(BaseSettings):
+    top_movies_url: str = "http://app:8000/api/v1/films_popular"
+    recommendation_counter: int = 5
+    recommendation_actuality_duration: int = 7  # in days
+    model_version: str = "0.0.1"
     mongo: MongoSettings = MongoSettings()
     rabbit: RabbitSettings = RabbitSettings()
