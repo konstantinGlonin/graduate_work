@@ -21,7 +21,7 @@ async def user_recommendation(user_id: UUID,
     recommendation = await get_recommendation(data=data, mongo=mongo, rabbit=rabbit)
 
     if recommendation:
-        return {"recommendations": recommendation}
+        return recommendation
 
     await put_request_on_new_recommendation_into_queue(data=data, rabbit=rabbit)
 
@@ -38,7 +38,7 @@ async def movie_recommendation(movie_id: UUID,
     recommendation = await get_recommendation(data=data, mongo=mongo, rabbit=rabbit)
 
     if recommendation:
-        return {"recommendations": recommendation}
+        return recommendation
 
     await put_request_on_new_recommendation_into_queue(data=data, rabbit=rabbit)
 
