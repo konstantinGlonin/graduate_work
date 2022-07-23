@@ -80,6 +80,5 @@ async def get_top():
     async with aiohttp.ClientSession() as session:
         tasks = [task(session=session, url=config.top_movies_url)]
         top_movies = await asyncio.gather(*tasks)
-        print(top_movies)
         result = [movie["id"] for movie in top_movies[0]]
         return result
