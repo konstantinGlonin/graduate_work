@@ -15,7 +15,24 @@ services:
       - praktikum
     environment:
       WAIT_HOSTS: mongodb:27017, rabbitmq:15672
+    env_file:
+      - .env
 
+  worker:
+    user: "1000:1000"
+    build: ./src
+    command: [ 'python', 'worker.py' ]
+    volumes:
+      - ./src:/src:rw
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      - praktikum
+    environment:
+      WAIT_HOSTS: mongodb:27017, rabbitmq:15672
+    env_file:
+      - .env
 
   data_service:
     user: "1000:1000"
@@ -39,10 +56,8 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-    volumes:
-      - rabbit-volume:/var/lib/rabbitmq/
-      - ./rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-      - ./rabbit/definitions.json:/etc/rabbitmq/definitions.json:ro
+    env_file:
+      - .env
     networks:
       - praktikum
     healthcheck:
@@ -51,8 +66,6 @@ services:
       timeout: 10s
       retries: 5
 
-volumes:
-  rabbit-volume:
 
 networks:
   praktikum:

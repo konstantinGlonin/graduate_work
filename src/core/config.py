@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic import BaseSettings, Field
 
 
 class MongoSettings(BaseSettings):
@@ -12,8 +12,8 @@ class MongoSettings(BaseSettings):
 class RabbitSettings(BaseSettings):
     host: str = "rabbitmq"
     port: int = 5672
-    username: str = "user"
-    password: str = "as1234"
+    username: str = Field(default="user", env='RABBITMQ_DEFAULT_USER')
+    password: str = Field(default='pass', env='RABBITMQ_DEFAULT_PASS')
 
     class Config:
         env_prefix = "rabbitmq_"
