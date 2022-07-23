@@ -34,7 +34,7 @@ async def movie_recommendation(movie_id: UUID,
                                mongo=Depends(get_mongo_client),
                                rabbit=Depends(get_rabbit_connection)):
 
-    data = BaseRecommendations(**{"id": movie_id, "type": "user"})
+    data = BaseRecommendations(**{"id": movie_id, "type": "movie"})
     recommendation = await get_recommendation(data=data, mongo=mongo, rabbit=rabbit)
 
     if recommendation:
