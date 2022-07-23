@@ -30,7 +30,7 @@ services:
     networks:
       - praktikum
     environment:
-      WAIT_HOSTS: mongodb:27017, rabbitmq:15672
+      WAIT_HOSTS: mongodb:27017, rabbitmq:15672, rabbitmq:5672
     env_file:
       - .env
 

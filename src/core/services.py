@@ -4,7 +4,6 @@ from datetime import datetime
 import aiohttp
 import aio_pika
 from aiohttp import ContentTypeError
-from fastapi import Depends
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from core.config import Config
@@ -61,10 +60,6 @@ async def get_recommendation(data: BaseRecommendations,
         return recommendation["data"]
 
     return None
-
-
-async def movie_recommendation():
-    pass
 
 
 async def task(session, url):
