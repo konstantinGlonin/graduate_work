@@ -34,9 +34,10 @@ async def put_request_on_new_recommendation_into_queue(data: BaseRecommendations
     return x.delivery_tag
 
 
-async def user_recommendation(data: BaseRecommendations,
-                              rabbit=Depends(get_rabbit_connection),
-                              mongo=Depends(get_mongo_client)):
+async def get_recommendation(data: BaseRecommendations,
+                             mongo: AsyncIOMotorClient,
+                             rabbit: aio_pika.Connection):
+
     coll = mongo.movies.recommendations
     recommendation = await coll.find_one({"id": f"{data.id}"})
 
@@ -44,7 +45,6 @@ async def user_recommendation(data: BaseRecommendations,
         if (datetime.now() - recommendation["updated_at"]).days >= config.recommendation_actuality_duration \
                 or recommendation["counter"] >= config.recommendation_counter \
                 or recommendation["model_version"] != config.model_version:
-
             await put_request_on_new_recommendation_into_queue(data=data, rabbit=rabbit)
 
         _id = recommendation["_id"]
@@ -78,8 +78,8 @@ async def task(session, url):
 
 async def get_top():
     async with aiohttp.ClientSession() as session:
-
         tasks = [task(session=session, url=config.top_movies_url)]
         top_movies = await asyncio.gather(*tasks)
-
-        return top_movies
+        print(top_movies)
+        result = [movie["id"] for movie in top_movies[0]]
+        return result
