@@ -35,10 +35,11 @@ jobs:
         env:
           CR_REGISTRY: crp408n3h0j7ajlf6sei
           CR_REPO: yc-cr-github-action
-          IMAGE_TAG: ${{ github.sha }}
+          SRC_IMAGE_TAG: ${{ github.sha }}src
+          DATA_SERVICE_IMAGE_TAG: ${{ github.sha }}data
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG ./src
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$SRC_IMAGE_TAG ./src
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$SRC_IMAGE_TAG
           
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG ./data_service
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG ./data_service
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG
