@@ -15,7 +15,7 @@ class GenresContentBasedModel(object):
     Using example:
     RecommendModel = load_model()
     recommender = RecommendModel()
-    recommends = recommender.get_recommends()
+    recommends = recommender.get_recommends('<genres_str>')
     """
 
     def __init__(self,

@@ -13,9 +13,10 @@ class CollaborativeFilterModel(object):
     """
     Collaborative Filter Model.
     Using example:
+    from ml.models.collaborative_filter import load_model
     RecommendModel = load_model()
     recommender = RecommendModel()
-    recommends = recommender.get_recommends()
+    recommends = recommender.get_recommends(user_id='<user_id>', item_ids=<item_ids_list>)
     """
     recommends = None
     algo = None
