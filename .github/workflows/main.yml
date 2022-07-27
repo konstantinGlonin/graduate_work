@@ -55,6 +55,10 @@ jobs:
         id: deploy-coi
         uses: yc-actions/yc-coi-deploy@v1.0.1
         env:
+          CR_REGISTRY: crp408n3h0j7ajlf6sei
+          CR_REPO: yc-cr-github-action
+          SRC_IMAGE_TAG: ${{ github.sha }}src
+          DATA_SERVICE_IMAGE_TAG: ${{ github.sha }}data
           SSH_KEY: ${{ secrets.SSH_KEY }}
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
