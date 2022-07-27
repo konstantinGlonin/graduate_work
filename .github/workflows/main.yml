@@ -66,5 +66,5 @@ jobs:
           vm-core-fraction: 100
           vm-zone-id: ru-central1-a
           vm-subnet-id: e9bja6n3pk4cr9e6q4fk
-          user-data-path: './user-data.yaml'
-          docker-compose-path: './docker-compose.prod.yaml'
+          user-data-path: './user-data.yml'
+          docker-compose-path: './docker-compose.prod.yml'
