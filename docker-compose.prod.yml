@@ -3,7 +3,7 @@ version: '3.9'
 services:
   recommendations_api:
     user: "1000:1000"
-    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ evn.SRC_IMAGE_TAG }}
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
     ports:
       - "8000:8000"
     depends_on:
