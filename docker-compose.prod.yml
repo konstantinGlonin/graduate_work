@@ -132,6 +132,17 @@ services:
       ELASTIC_PORT: 9200
       ELASTIC_INDEX: movies
       LANGUAGE: ru
+      db_host: db
+      db_name: movies_database
+      db_user: postgres
+      db_password: pass
+      project_name: movies
+      redis_host: redis
+      redis_port: 6379
+      redis_cache_expire_in_minutes: 5
+      elastic_host: search
+      elastic_port: 9200
+      elastic_index: movies
     image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.ELASTIC_IMAGE_TAG }}
     networks:
       - praktikum
