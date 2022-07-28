@@ -29,7 +29,7 @@ class ConfigDB(BaseSettings):
 
 
 class ConfigElk(BaseSettings):
-    host: str = 'localhost'
+    host: str = 'search'
     port: int = 9200
     indexes: list[str] = ['movies', 'person', 'genre']
     index_schemas: dict[str, str] = {
