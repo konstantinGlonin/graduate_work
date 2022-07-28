@@ -41,11 +41,44 @@ services:
       - "8001:8000"
     networks:
       - praktikum
+      
+  app:
+    user: "1000:1000"
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.MOVIES_IMAGE_TAG }}
+    ports:
+      - "8002:8000"
+    environment:
+      DEBUG: True
+      DB_HOST: db
+      DB_NAME: movies_database
+      DB_USER: postgres
+      DB_PASSWORD: pass
+      PROJECT_NAME: movies
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_CACHE_EXPIRE_IN_MINUTES: 5
+      ELASTIC_HOST: search
+      ELASTIC_PORT: 9200
+      ELASTIC_INDEX: movies
+      LANGUAGE: ru
+    depends_on:
+      - search
+      - redis
+    networks:
+      - praktikum
+    command: python3 main.py
 
   mongodb:
     image: mongo:5.0.7
     ports:
       - "27017:27017"
+    networks:
+      - praktikum
+      
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
     networks:
       - praktikum
 
@@ -66,7 +99,60 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
+      
+  search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+    networks:
+      - praktikum
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+        
+  elt-elk:
+    environment:
+      DEBUG: True
+      DB_HOST: db
+      DB_NAME: movies_database
+      DB_USER: postgres
+      DB_PASSWORD: pass
+      PROJECT_NAME: movies
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_CACHE_EXPIRE_IN_MINUTES: 5
+      ELASTIC_HOST: search
+      ELASTIC_PORT: 9200
+      ELASTIC_INDEX: movies
+      LANGUAGE: ru
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.ELASTIC_IMAGE_TAG }}
+    networks:
+      - praktikum
+    depends_on:
+      - db
+        
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "movies_database"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "movies_database", "-U", "postgres" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    ports:
+      - "5432:5432"
+    networks:
+      - praktikum
 
 networks:
   praktikum:
