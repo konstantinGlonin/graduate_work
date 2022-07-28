@@ -39,6 +39,7 @@ class ConfigElk(BaseSettings):
     }
 
     def get_url(self):
+        print(f'http://{self.host}:{self.port}')
         return f'http://{self.host}:{self.port}'
 
     class Config:
