@@ -37,12 +37,20 @@ jobs:
           CR_REPO: yc-cr-github-action
           SRC_IMAGE_TAG: ${{ github.sha }}src
           DATA_SERVICE_IMAGE_TAG: ${{ github.sha }}data
+          MOVIES_IMAGE_TAG: ${{ github.sha }}movies
+          ELASTIC_IMAGE_TAG: ${{ github.sha }}elastic
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$SRC_IMAGE_TAG ./src
           docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$SRC_IMAGE_TAG
           
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG ./data_service
           docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG
+          
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$MOVIES_IMAGE_TAG ./movies
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$MOVIES_IMAGE_TAG
+          
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$ELASTIC_IMAGE_TAG ./etl/elastic
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$ELASTIC_IMAGE_TAG
           
   deploy:
     needs:
