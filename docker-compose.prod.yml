@@ -20,7 +20,7 @@ services:
 
   worker:
     user: "1000:1000"
-    build: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
     command: [ 'python', 'worker.py' ]
     depends_on:
       - rabbitmq
@@ -36,7 +36,7 @@ services:
 
   data_service:
     user: "1000:1000"
-    build: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.DATA_SERVICE_IMAGE_TAG }}
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.DATA_SERVICE_IMAGE_TAG }}
     ports:
       - "8001:8000"
     networks:
