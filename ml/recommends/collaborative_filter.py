@@ -2,7 +2,7 @@ import sys
 import getopt
 
 from typing import List
-from ..models.collaborative_filter import load_model as load_collaborative_filter_model
+from ml.recommends.models import load_model as load_collaborative_filter_model
 
 
 class CollaborativeFilterRecommender(object):
@@ -32,3 +32,4 @@ if __name__ == '__main__':
     if uid and iids:
         recommender = CollaborativeFilterRecommender()
         recommends = recommender.get_recommends(user_id=uid, item_ids=iids)
+        print(recommends[:10])

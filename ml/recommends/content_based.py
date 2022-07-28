@@ -1,4 +1,4 @@
-from ..models.content_based import load_model as load_content_based_model
+from models.content_based import load_model as load_content_based_model
 
 
 class ContentBasedRecommender(object):
@@ -7,7 +7,7 @@ class ContentBasedRecommender(object):
     """
 
     def __init__(self, *args, **kwargs):
-        self.model = load_content_based_model()
+        self.model = load_content_based_model('models/content_based.pickle')
 
     def get_recommends(self, genres: str, *args, **kwargs):
         """
@@ -20,3 +20,4 @@ class ContentBasedRecommender(object):
 if __name__ == '__main__':
     recommender = ContentBasedRecommender()
     recommends = recommender.get_recommends(genres='Action|History|Adventure|Fantasy')
+    print(recommends)
