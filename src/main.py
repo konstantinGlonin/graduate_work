@@ -34,7 +34,7 @@ app = prepare_app(ROUTERS)
 async def startup() -> None:
     """Startup hook."""
     services.MONGO_CLIENT = AsyncIOMotorClient(config.mongo.host, config.mongo.port)
-    services.rabbit_connection = await aio_pika.connect(
+    services.RABBIT_CONNECTION = await aio_pika.connect(
         host=config.rabbit.host,
         port=config.rabbit.port,
         password=config.rabbit.password,
@@ -45,7 +45,7 @@ async def startup() -> None:
 @app.on_event("shutdown")
 async def shutdown() -> None:
     """Shutdown hook."""
-    await services.rabbit_connection.close()
+    await services.RABBIT_CONNECTION.close()
 
 
 if __name__ == "__main__":
