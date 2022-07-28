@@ -1,42 +1,42 @@
 version: '3.9'
 
 services:
-  recommendations_api:
-    user: "1000:1000"
-    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
-    ports:
-      - "8000:8000"
-    depends_on:
-      - rabbitmq
-      - mongodb
-    networks:
-      - praktikum
-    environment:
-      WAIT_HOSTS: mongodb:27017, rabbitmq:15672
-    env_file:
-      - .env
+#   recommendations_api:
+#     user: "1000:1000"
+#     image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - rabbitmq
+#       - mongodb
+#     networks:
+#       - praktikum
+#     environment:
+#       WAIT_HOSTS: mongodb:27017, rabbitmq:15672
+#     env_file:
+#       - .env
 
-  worker:
-    user: "1000:1000"
-    build: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
-    command: [ 'python', 'worker.py' ]
-    depends_on:
-      - rabbitmq
-      - mongodb
-    networks:
-      - praktikum
-    environment:
-      WAIT_HOSTS: mongodb:27017, rabbitmq:15672, rabbitmq:5672
-    env_file:
-      - .env
+#   worker:
+#     user: "1000:1000"
+#     build: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.SRC_IMAGE_TAG }}
+#     command: [ 'python', 'worker.py' ]
+#     depends_on:
+#       - rabbitmq
+#       - mongodb
+#     networks:
+#       - praktikum
+#     environment:
+#       WAIT_HOSTS: mongodb:27017, rabbitmq:15672, rabbitmq:5672
+#     env_file:
+#       - .env
 
-  data_service:
-    user: "1000:1000"
-    build: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.DATA_SERVICE_IMAGE_TAG }}
-    ports:
-      - "8001:8000"
-    networks:
-      - praktikum
+#   data_service:
+#     user: "1000:1000"
+#     build: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.DATA_SERVICE_IMAGE_TAG }}
+#     ports:
+#       - "8001:8000"
+#     networks:
+#       - praktikum
 
   mongodb:
     image: mongo:5.0.7
@@ -55,7 +55,7 @@ services:
     networks:
       - praktikum
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5672" ]
+      test: [ "CMD", "curl", "-f", "http://rabbitmq:5672" ]
       interval: 30s
       timeout: 10s
       retries: 5
