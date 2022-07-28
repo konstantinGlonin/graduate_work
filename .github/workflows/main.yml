@@ -67,6 +67,8 @@ jobs:
           CR_REPO: yc-cr-github-action
           SRC_IMAGE_TAG: ${{ github.sha }}src
           DATA_SERVICE_IMAGE_TAG: ${{ github.sha }}data
+          MOVIES_IMAGE_TAG: ${{ github.sha }}movies
+          ELASTIC_IMAGE_TAG: ${{ github.sha }}elastic
           SSH_KEY: ${{ secrets.SSH_KEY }}
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
