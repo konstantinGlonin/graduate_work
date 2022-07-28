@@ -76,7 +76,7 @@ jobs:
           vm-name: yc-action-demo
           vm-service-account-id: ajetpu9ka0lfp65khqoo
           vm-cores: 4
-          vm-memory: 4 GB
+          vm-memory: 8 GB
           vm-core-fraction: 100
           vm-zone-id: ru-central1-a
           vm-subnet-id: e9bja6n3pk4cr9e6q4fk
