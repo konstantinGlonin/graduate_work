@@ -42,31 +42,31 @@ services:
     networks:
       - praktikum
       
-  app:
-    user: "1000:1000"
-    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.MOVIES_IMAGE_TAG }}
-    ports:
-      - "8002:8000"
-    environment:
-      DEBUG: True
-      DB_HOST: db
-      DB_NAME: movies_database
-      DB_USER: postgres
-      DB_PASSWORD: pass
-      PROJECT_NAME: movies
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_CACHE_EXPIRE_IN_MINUTES: 5
-      ELASTIC_HOST: search
-      ELASTIC_PORT: 9200
-      ELASTIC_INDEX: movies
-      LANGUAGE: ru
-    depends_on:
-      - search
-      - redis
-    networks:
-      - praktikum
-    command: python3 main.py
+#  app:
+#    user: "1000:1000"
+#    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.MOVIES_IMAGE_TAG }}
+#    ports:
+#      - "8002:8000"
+#    environment:
+#      DEBUG: True
+#      DB_HOST: db
+#      DB_NAME: movies_database
+#      DB_USER: postgres
+#      DB_PASSWORD: pass
+#      PROJECT_NAME: movies
+#      REDIS_HOST: redis
+#      REDIS_PORT: 6379
+#      REDIS_CACHE_EXPIRE_IN_MINUTES: 5
+#      ELASTIC_HOST: search
+#      ELASTIC_PORT: 9200
+#      ELASTIC_INDEX: movies
+#      LANGUAGE: ru
+#    depends_on:
+#      - search
+#      - redis
+#    networks:
+#      - praktikum
+#    command: python3 main.py
 
   mongodb:
     image: mongo:5.0.7
@@ -76,7 +76,7 @@ services:
       - praktikum
       
   redis:
-    image: "redis:alpine"
+    image: redis:alpine
     ports:
       - "6379:6379"
     networks:
@@ -117,26 +117,26 @@ services:
         soft: 65536
         hard: 65536
         
-  elt-elk:
-    environment:
-      DEBUG: True
-      DB_HOST: db
-      DB_NAME: movies_database
-      DB_USER: postgres
-      DB_PASSWORD: pass
-      PROJECT_NAME: movies
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_CACHE_EXPIRE_IN_MINUTES: 5
-      ELASTIC_HOST: search
-      ELASTIC_PORT: 9200
-      ELASTIC_INDEX: movies
-      LANGUAGE: ru
-    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.ELASTIC_IMAGE_TAG }}
-    networks:
-      - praktikum
-    depends_on:
-      - db
+#  elt-elk:
+#    environment:
+#      DEBUG: True
+#      DB_HOST: db
+#      DB_NAME: movies_database
+#      DB_USER: postgres
+#      DB_PASSWORD: pass
+#      PROJECT_NAME: movies
+#      REDIS_HOST: redis
+#      REDIS_PORT: 6379
+#      REDIS_CACHE_EXPIRE_IN_MINUTES: 5
+#      ELASTIC_HOST: search
+#      ELASTIC_PORT: 9200
+#      ELASTIC_INDEX: movies
+#      LANGUAGE: ru
+#    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.ELASTIC_IMAGE_TAG }}
+#    networks:
+#      - praktikum
+#    depends_on:
+#      - db
         
   db:
     image: postgres:13
