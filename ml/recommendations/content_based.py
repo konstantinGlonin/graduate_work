@@ -1,4 +1,4 @@
-from domain.content_based_model import load_model
+from models.content_based_model import load_model
 
 
 class ContentBasedRecommender(object):
