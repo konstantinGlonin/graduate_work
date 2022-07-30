@@ -23,4 +23,5 @@ class ContentBasedRecommender(object):
 if __name__ == '__main__':
     from models.content_based_model import ContentBasedModel  # noqa
     cbr = ContentBasedRecommender('models/content_based.pickle')
-    print(cbr.get_recommends('Action|Sci-Fi|Thriller', 'Matrix, The (1999)'))
+    'Terminator Genisys (2015),Action|Adventure|Sci-Fi|Thriller'
+    print(cbr.get_recommends('Action|Adventure|Sci-Fi|Thriller', 'Terminator, The'))

@@ -22,18 +22,17 @@ class ContentBasedModel(object):
                  neighbors_count: int = 10,
                  jobs_count: int = -1,
                  metric: str = 'euclidean'):
-        ratings_path = f'{self.data_dir_path}/ratings.csv'
-        movies_path = f'{self.data_dir_path}/movies.csv'
-        self.ratings = pd.read_csv(ratings_path)
+
+        movies_path = f'{self.data_dir_path}/movies_nw.csv'
         movies = pd.read_csv(movies_path)
-        mean_ratings = self.ratings.groupby('movieId')['rating'].mean()
-        mean_ratings = mean_ratings.to_frame()
+
         ct = ColumnTransformer([
             ('scaled_mean_rating', StandardScaler(), ['rating'])
         ], remainder='passthrough')
-        movies = movies.merge(mean_ratings, left_on='movieId', right_on='movieId')
-        self.movies = pd.DataFrame(ct.fit_transform(movies),
+
+        self.movies = pd.DataFrame(ct.fit_transform(movies[['rating', 'id', 'title', 'genres']]),
                                    columns=['scaled_mean_rating', 'movieId', 'title', 'genres'])
+
         self.transformer = ColumnTransformer(
             [('genres_vectorizer', CountVectorizer(), 'genres'),
              ('title_vectorizer', CountVectorizer(), 'title')],
