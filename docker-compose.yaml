@@ -21,16 +21,13 @@ services:
   worker:
     user: "1000:1000"
     build: ./src
-    command: [ 'python', 'worker.py' ]
+    command: bash -c '/wait && python /src/worker.py'
     volumes:
       - ./src:/src:rw
-    depends_on:
-      - rabbitmq
-      - mongodb
+    environment:
+      WAIT_HOSTS: mongodb:27017, rabbitmq:5672
     networks:
       - praktikum
-    environment:
-      WAIT_HOSTS: mongodb:27017, rabbitmq:15672, rabbitmq:5672
     env_file:
       - .env
 
@@ -61,11 +58,10 @@ services:
     networks:
       - praktikum
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5672" ]
+      test: rabbitmq-diagnostics -q ping
       interval: 30s
-      timeout: 10s
-      retries: 5
-
+      timeout: 30s
+      retries: 3
 
 networks:
   praktikum:
