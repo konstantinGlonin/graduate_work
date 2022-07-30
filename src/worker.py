@@ -7,16 +7,26 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from orjson import orjson
 
 from core.config import Config
-from core.services import get_top
-from models.recomendations import Recommendation
+from core.services import get_top, get_film
+
+from domain.recomendations import Recommendation
+from models.content_based import ContentBasedRecommender
 
 config = Config()
 mongodb = AsyncIOMotorClient(config.mongo.host, config.mongo.port)
 
+from models.content_based_model import ContentBasedModel  # noqa
+
+cbr = ContentBasedRecommender('models/data/content_based.pickle')
+
 
 async def get_movie_recommendations(movie_id: UUID):
-    # todo: replace by model prediction
-    data = await get_top()
+    film = await get_film(movie_id)
+
+    genres = '|'.join([i['name'] for i in film['genres']])
+    data = cbr.get_recommends(genres, film['title'])
+    data = [i for i in data if str(movie_id) != i]
+
     return Recommendation(
         id=movie_id,
         type='movie',
@@ -67,7 +77,6 @@ async def main() -> None:
         password=config.rabbit.password,
         login=config.rabbit.username
     )
-    # todo: Добавить инициализацию ML моделей
 
     async with connection:
         channel = await connection.channel()

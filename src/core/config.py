@@ -19,13 +19,27 @@ class RabbitSettings(BaseSettings):
         env_prefix = "rabbitmq_"
 
 
+class MovieServiceSettings(BaseSettings):
+    base_url: str = "http://app:8000/api/v1"
+
+    def url(self, endpoint: str = '', param: str = None):
+        if param is None:
+            return f'''{self.base_url}/{endpoint}'''
+        else:
+            return f'''{self.base_url}/{endpoint}/{param}'''
+
+    class Config:
+        env_prefix = "movies_"
+
+
 class Config(BaseSettings):
-    top_movies_url: str = "http://app:8000/api/v1/films_popular"
     recommendation_counter: int = 5
     recommendation_actuality_duration: int = 7  # in days
     model_version: str = "0.0.1"
     mongo: MongoSettings = MongoSettings()
     rabbit: RabbitSettings = RabbitSettings()
+
+    movies: MovieServiceSettings = MovieServiceSettings()
 
     def get_model_version(self):
         return self.model_version

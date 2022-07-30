@@ -7,7 +7,7 @@ from core.services import (get_mongo_client,
                            get_top,
                            put_request_on_new_recommendation_into_queue,
                            get_recommendation)
-from models.recomendations import BaseRecommendations
+from domain.recomendations import BaseRecommendations
 
 router = APIRouter(prefix="/recommendation", tags=["recommendation"])
 

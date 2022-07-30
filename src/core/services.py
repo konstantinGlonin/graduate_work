@@ -1,5 +1,7 @@
 import asyncio
 from datetime import datetime
+from typing import Union
+from uuid import UUID
 
 import aiohttp
 import aio_pika
@@ -7,10 +9,10 @@ from aiohttp import ContentTypeError
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from core.config import Config
-from models.recomendations import BaseRecommendations
+from domain.recomendations import BaseRecommendations
 
-MONGO_CLIENT: AsyncIOMotorClient | None = None
-RABBIT_CONNECTION: aio_pika.Connection | None = None
+MONGO_CLIENT: Union[AsyncIOMotorClient, None] = None
+RABBIT_CONNECTION: Union[aio_pika.Connection, None] = None
 
 config = Config()
 
@@ -36,7 +38,6 @@ async def put_request_on_new_recommendation_into_queue(data: BaseRecommendations
 async def get_recommendation(data: BaseRecommendations,
                              mongo: AsyncIOMotorClient,
                              rabbit: aio_pika.Connection):
-
     coll = mongo.movies.recommendations
     recommendation = await coll.find_one({"id": f"{data.id}"})
 
@@ -73,7 +74,19 @@ async def task(session, url):
 
 async def get_top():
     async with aiohttp.ClientSession() as session:
-        tasks = [task(session=session, url=config.top_movies_url)]
+        print(config.movies.url('films_popular'))
+        tasks = [task(session=session, url=config.movies.url('films_popular'))]
         top_movies = await asyncio.gather(*tasks)
+        print(top_movies)
         result = [movie["id"] for movie in top_movies[0]]
         return result
+
+
+async def get_film(film_id=UUID):
+    async with aiohttp.ClientSession() as session:
+        film = await asyncio.gather(task(session=session, url=config.movies.url('films', str(film_id))))
+
+        if len(film) > 0:
+            return film[0]
+
+        return None

@@ -1,4 +1,4 @@
-from models.content_based_model import load_model
+from domain.content_based_model import load_model
 
 
 class ContentBasedRecommender(object):
@@ -21,7 +21,7 @@ class ContentBasedRecommender(object):
 
 
 if __name__ == '__main__':
-    from models.content_based_model import ContentBasedModel  # noqa
+    from domain.content_based_model import ContentBasedModel  # noqa
     cbr = ContentBasedRecommender('models/content_based.pickle')
-    'Terminator Genisys (2015),Action|Adventure|Sci-Fi|Thriller'
+
     print(cbr.get_recommends('Action|Adventure|Sci-Fi|Thriller', 'Terminator, The'))
