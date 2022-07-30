@@ -34,26 +34,35 @@ class ContentBasedModel(object):
         movies = movies.merge(mean_ratings, left_on='movieId', right_on='movieId')
         self.movies = pd.DataFrame(ct.fit_transform(movies),
                                    columns=['scaled_mean_rating', 'movieId', 'title', 'genres'])
-        self.count_vect = CountVectorizer()
+        self.transformer = ColumnTransformer(
+            [('genres_vectorizer', CountVectorizer(), 'genres'),
+             ('title_vectorizer', CountVectorizer(), 'title')],
+            remainder='drop', verbose_feature_names_out=False)
         self.tfidf_transformer = TfidfTransformer()
         self.neigh = NearestNeighbors(
             n_neighbors=neighbors_count, n_jobs=jobs_count, metric=metric)
 
     def fit(self):
-        movie_genres = [change_string(g) for g in self.movies.genres.values]
-        x_train_counts = self.count_vect.fit_transform(movie_genres)
+        movie_data = pd.DataFrame(
+            {'genres': [change_string(g) for g in self.movies.genres.values],
+             'title': self.movies.title.values}
+        )
+        x_train_counts = self.transformer.fit_transform(movie_data)
         x_train_tfidf = self.tfidf_transformer.fit_transform(x_train_counts)
         self.neigh = self.neigh.fit(x_train_tfidf)
         return self
 
-    def get_recommends(self, genres: str):
+    def get_recommends(self, genres: str, title: str = None):
         """
-        Return movieId list of recommended movies by string of genres divided by slash.
-        Example: genres="Adventure|Comedy|Fantasy|Crime"
+        Return movieId list of recommended movies by string of genres divided by slash and title.
+        Example: genres="Action|Sci-Fi|Thriller", title="Matrix, The (1999)"
         return: List[int] like [143559, 4467, 4911, 3489, 60074, 109042, 4899]
         """
-        test = change_string(genres)
-        predict = self.count_vect.transform([test])
+        test = pd.DataFrame(
+            {'genres': [change_string(genres)],
+             'title': [title]}
+        )
+        predict = self.transformer.transform(test)
         x_tfidf2 = self.tfidf_transformer.transform(predict)
         res = self.neigh.kneighbors(x_tfidf2, return_distance=True)
         return list(self.movies.iloc[res[1][0]].sort_values(
@@ -72,10 +81,10 @@ def load_model(model_file_path):
         return pickle.load(f)
 
 
-def get_recommends(model_file_path, genres):
-    return load_model(model_file_path).get_recommends(genres)
+def get_recommends(model_file_path, genres, title):
+    return load_model(model_file_path).get_recommends(genres, title)
 
 
 if __name__ == '__main__':
     dump_model('content_based.pickle')
-    print(get_recommends('content_based.pickle', 'Action|History|Adventure|Fantasy'))
+    print(get_recommends('content_based.pickle', 'Action|Comedy|Crime|Drama|Thriller', 'Money Train (1995)'))
