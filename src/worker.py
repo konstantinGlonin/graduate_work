@@ -7,25 +7,31 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from orjson import orjson
 
 from core.config import Config
-from core.services import get_top, get_film
-
+from core.services import get_film
 from domain.recomendations import Recommendation
+from models.collaborative_filter import CollaborativeFilterRecommender
 from models.content_based import ContentBasedRecommender
 
 config = Config()
 mongodb = AsyncIOMotorClient(config.mongo.host, config.mongo.port)
 
 from models.content_based_model import ContentBasedModel  # noqa
+from models.collaborative_filter_model import CollaborativeFilterModel  # noqa
 
 cbr = ContentBasedRecommender('models/data/content_based.pickle')
+cfr = CollaborativeFilterRecommender('models/data/collaborative_filter.pickle')
 
 
 async def get_movie_recommendations(movie_id: UUID):
     film = await get_film(movie_id)
-
+    if 'genres' not in film:
+        return None
     genres = '|'.join([i['name'] for i in film['genres']])
     data = cbr.get_recommends(genres, film['title'])
     data = [i for i in data if str(movie_id) != i]
+
+    if 'detail' in data:
+        return None
 
     return Recommendation(
         id=movie_id,
@@ -35,8 +41,11 @@ async def get_movie_recommendations(movie_id: UUID):
 
 
 async def get_user_recommendations(user_id: UUID):
-    # todo: replace by model prediction
-    data = await get_top()
+    data = cfr.get_recommends(user_id)
+
+    if len(data) < 0:
+        return None
+
     return Recommendation(
         id=user_id,
         type='user',
@@ -45,7 +54,6 @@ async def get_user_recommendations(user_id: UUID):
 
 
 async def save_recommendations(recommendation: Recommendation):
-    # todo: save to mongodb
     coll = mongodb.movies.recommendations
 
     prev_recommendation = await coll.find_one({"id": f"{recommendation.id}"})
@@ -67,7 +75,8 @@ async def on_message(message: AbstractIncomingMessage) -> None:
             recommendation = await get_user_recommendations(event['id'])
         else:
             return None
-        await save_recommendations(recommendation)
+        if isinstance(recommendation, Recommendation):
+            await save_recommendations(recommendation)
 
 
 async def main() -> None:

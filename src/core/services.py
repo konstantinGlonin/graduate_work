@@ -74,17 +74,27 @@ async def task(session, url):
 
 async def get_top():
     async with aiohttp.ClientSession() as session:
-        print(config.movies.url('films_popular'))
         tasks = [task(session=session, url=config.movies.url('films_popular'))]
         top_movies = await asyncio.gather(*tasks)
-        print(top_movies)
-        result = [movie["id"] for movie in top_movies[0]]
-        return result
+        if len(top_movies) > 0:
+            result = [movie["id"] for movie in top_movies[0]]
+            return result
+        return None
 
 
 async def get_film(film_id=UUID):
     async with aiohttp.ClientSession() as session:
         film = await asyncio.gather(task(session=session, url=config.movies.url('films', str(film_id))))
+
+        if len(film) > 0:
+            return film[0]
+
+        return None
+
+
+async def get_user_films(user_id=UUID):
+    async with aiohttp.ClientSession() as session:
+        film = await asyncio.gather(task(session=session, url=config.ugc.url('get_user_films', str(user_id))))
 
         if len(film) > 0:
             return film[0]

@@ -32,6 +32,19 @@ class MovieServiceSettings(BaseSettings):
         env_prefix = "movies_"
 
 
+class UgcServiceSettings(BaseSettings):
+    base_url: str = "http://ugc:8000/api/v1/data"
+
+    def url(self, endpoint: str = '', param: str = None):
+        if param is None:
+            return f'''{self.base_url}/{endpoint}'''
+        else:
+            return f'''{self.base_url}/{endpoint}/{param}'''
+
+    class Config:
+        env_prefix = "ugc_"
+
+
 class Config(BaseSettings):
     recommendation_counter: int = 5
     recommendation_actuality_duration: int = 7  # in days
@@ -40,6 +53,7 @@ class Config(BaseSettings):
     rabbit: RabbitSettings = RabbitSettings()
 
     movies: MovieServiceSettings = MovieServiceSettings()
+    ugc: UgcServiceSettings = UgcServiceSettings()
 
     def get_model_version(self):
         return self.model_version

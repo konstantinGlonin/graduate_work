@@ -19,7 +19,7 @@ services:
       - .env
 
   worker:
-    user: "1000:1000"
+
     build: ./src
     command: bash -c '/wait && python /src/worker.py'
     volumes:
