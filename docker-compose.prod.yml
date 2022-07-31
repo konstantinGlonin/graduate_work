@@ -33,14 +33,6 @@ services:
       MONGO_PORT: 27017
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: pass
-
-  data_service:
-    user: "1000:1000"
-    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPO }}:{{ env.DATA_SERVICE_IMAGE_TAG }}
-    ports:
-      - "8001:8000"
-    networks:
-      - praktikum
       
   app:
     user: "1000:1000"
