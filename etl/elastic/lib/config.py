@@ -18,11 +18,11 @@ class ConfigRedis(BaseSettings):
 
 
 class ConfigDB(BaseSettings):
-    host: str = 'localhost'
+    host: str = 'db'
     port: int = 5432
     dbname: str = Field(..., env='DB_NAME')
     user: str = 'postgres'
-    password: str = 'somepass'
+    password: str = 'pass'
 
     class Config:
         env_prefix = 'db_'
@@ -39,7 +39,6 @@ class ConfigElk(BaseSettings):
     }
 
     def get_url(self):
-        print(f'http://{self.host}:{self.port}')
         return f'http://{self.host}:{self.port}'
 
     class Config:
