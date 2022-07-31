@@ -141,9 +141,9 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_PASSWORD: "pass"
-      POSTGRES_USER: "postgres"
-      POSTGRES_DB: "movies_database"
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: postgres
+      POSTGRES_DB: movies_database
     volumes:
       - /home/dbinit:/docker-entrypoint-initdb.d:ro
     healthcheck:
