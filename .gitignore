@@ -149,3 +149,5 @@ research/test_data/second_part.txt
 
 !etl/elastic/lib
 .idea
+/ml/recommendations/models/
+/ugc/
