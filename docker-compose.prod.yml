@@ -145,7 +145,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: movies_database
     volumes:
-      - /home/axis/dbinit:/docker-entrypoint-initdb.d:ro
+      - /home/axis/dbinit/dump.sql:/docker-entrypoint-initdb.d/create_schema.sql
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "movies_database", "-U", "postgres" ]
       timeout: 45s
