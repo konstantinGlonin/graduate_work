@@ -43,8 +43,8 @@ jobs:
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$SRC_IMAGE_TAG ./src
           docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$SRC_IMAGE_TAG
           
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG ./data_service
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG
+          # docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG ./data_service
+          # docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$DATA_SERVICE_IMAGE_TAG
           
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$MOVIES_IMAGE_TAG ./movies
           docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$MOVIES_IMAGE_TAG
