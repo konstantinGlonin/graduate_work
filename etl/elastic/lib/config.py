@@ -18,7 +18,7 @@ class ConfigRedis(BaseSettings):
 
 
 class ConfigDB(BaseSettings):
-    host: str = 'localhost'
+    host: str = 'db'
     port: int = 5432
     dbname: str = Field(..., env='DB_NAME')
     user: str = 'postgres'
