@@ -6,21 +6,21 @@ help:
 start:
 	docker-compose -f docker-compose.yaml up -d
 	docker-compose -f movies/docker-compose.yml up -d
-	docker-compose -f ugc/docker-compose.yml up -d
+	# docker-compose -f ugc/docker-compose.yml up -d
 	docker-compose -f etl/docker-compose.yml up -d
 
 
 stop:
 	docker-compose -f etl/docker-compose.yml stop
 	docker-compose -f movies/docker-compose.yml stop
-	docker-compose -f ugc/docker-compose.yml stop
+	# docker-compose -f ugc/docker-compose.yml stop
 	docker-compose -f docker-compose.yaml stop
 
 
 down:
 	docker-compose -f etl/docker-compose.yml down  --remove-orphans
 	docker-compose -f movies/docker-compose.yml down --remove-orphans
-	docker-compose -f ugc/docker-compose.yml down --remove-orphans
+	# docker-compose -f ugc/docker-compose.yml down --remove-orphans
 	docker-compose -f docker-compose.yaml down  --remove-orphans
 
 ps:
