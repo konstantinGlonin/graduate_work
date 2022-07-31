@@ -144,6 +144,8 @@ services:
       POSTGRES_PASSWORD: "pass"
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "movies_database"
+    volumes:
+      - home/initdb:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "movies_database", "-U", "postgres" ]
       timeout: 45s
