@@ -22,7 +22,7 @@ class CollaborativeFilterModel(object):
     algo = None
 
     def __init__(self):
-        self.movies = set(pd.read_csv('../../data/1movies_nw.csv')['id'].values)
+        self.movies = set(pd.read_csv('../../data/movies_nw.csv')['id'].values)
         self.dataset = pd.read_csv('../../data/ratings_new.csv')
         self.dataset = self.dataset.rename({'user_id': 'uid', 'film_work_id': 'iid'}, axis=1)[['uid', 'iid', 'rating']]
 
