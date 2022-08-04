@@ -2,6 +2,7 @@ import sys
 import getopt
 
 from typing import List
+from uuid import UUID
 from models.collaborative_filter_model import load_model as load_collaborative_filter_model
 
 
@@ -12,7 +13,7 @@ class CollaborativeFilterRecommender(object):
     def __init__(self, model_file_path: str):
         self.model = load_collaborative_filter_model(model_file_path)
 
-    def get_recommends(self, user_id: str, item_ids: List[str]):
+    def get_recommends(self, user_id: UUID, item_ids: List[str]):
         return self.model.get_recommends(user_id=user_id, item_ids=item_ids)
 
 
