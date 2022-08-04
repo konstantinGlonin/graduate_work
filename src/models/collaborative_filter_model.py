@@ -1,5 +1,5 @@
 import pickle
-from typing import List
+from uuid import UUID
 
 import pandas as pd
 from surprise import Dataset
@@ -38,17 +38,17 @@ class CollaborativeFilterModel(object):
         test_pred = self.algo.test(testset)
         return accuracy.rmse(test_pred, verbose=True)
 
-    def __make_recommends(self, user_id: int):
+    def __make_recommends(self, user_id: UUID):
         rates = dict()
         for item_id in self.movies:
-            prediction = self.algo.predict(uid=user_id, iid=item_id)
+            prediction = self.algo.predict(uid=str(user_id), iid=item_id)
             rates[item_id] = prediction.est
         sorted_rates = {k: v for k, v in sorted(rates.items(), key=lambda item: item[1], reverse=True)}
         films = [k for k in sorted_rates.keys()]
 
         return films[:20]
 
-    def get_recommends(self, user_id: int):
+    def get_recommends(self, user_id: UUID):
         """
             Return tuple like (userId, [(itemId, predictedRating), ...]).
         """
