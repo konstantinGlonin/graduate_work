@@ -18,8 +18,8 @@ mongodb = AsyncIOMotorClient(config.mongo.host, config.mongo.port)
 from models.content_based_model import ContentBasedModel  # noqa
 from models.collaborative_filter_model import CollaborativeFilterModel  # noqa
 
-cbr = ContentBasedRecommender('models/data/content_based.pickle')
-cfr = CollaborativeFilterRecommender('models/data/collaborative_filter.pickle')
+cbr = ContentBasedRecommender(config.cbr_model_path)
+cfr = CollaborativeFilterRecommender(config.cfr_model_path)
 
 
 async def get_movie_recommendations(movie_id: UUID):

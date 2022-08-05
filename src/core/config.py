@@ -49,6 +49,8 @@ class Config(BaseSettings):
     recommendation_counter: int = 5
     recommendation_actuality_duration: int = 7  # in days
     model_version: str = "0.0.1"
+    cbr_model_path: str = 'models/data/content_based.pickle'
+    cfr_model_path: str = 'models/data/collaborative_filter.pickle'
     mongo: MongoSettings = MongoSettings()
     rabbit: RabbitSettings = RabbitSettings()
 

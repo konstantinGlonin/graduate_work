@@ -10,4 +10,4 @@ COPY ./ /src
 WORKDIR /src
 EXPOSE 8000/tcp
 
-CMD /wait && python /src/main.py
+CMD /wait && gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
